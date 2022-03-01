@@ -63,12 +63,12 @@ public class LoginController extends HttpServlet {
         if(account == null)
         {
             request.getSession().setAttribute("account", null);
-            response.getWriter().println("login failed!");
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
         }
         else
         {
             request.getSession().setAttribute("account", account);
-            response.getWriter().println("hello "+ account.getUsername());
+            request.getRequestDispatcher("view/menu.jsp").forward(request, response);
         }
     }
 

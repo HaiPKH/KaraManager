@@ -42,6 +42,10 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Account acc = new Account();
+        acc.setPassword("-1");
+        acc.setUsername("-1");
+        request.setAttribute("account", acc);
         request.getRequestDispatcher("view/login.jsp").forward(request, response);
     }
 

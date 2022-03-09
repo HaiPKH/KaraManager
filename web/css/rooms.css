@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 9, 2022, 11:06:56 PM
+    Author     : haiph
+*/
+
+.rooms{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 50px;
+}
+.room1{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}
+.room2{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}
+.room3{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}
+.room4{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}
+.room5{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}
+.room6{
+    border-style: outset;
+    border: 1px;
+    border-color: black;
+    margin-left: 10%;
+}

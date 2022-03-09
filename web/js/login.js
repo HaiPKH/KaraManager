@@ -5,6 +5,6 @@
  */
 function accountalert()
 {
-    document.getElementById("Error").innerHTML = "Invalid account and password";
+    document.getElementById("Error").innerHTML = "Invalid account and password!";
 }
 

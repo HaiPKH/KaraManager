@@ -5,9 +5,7 @@
  */
 package controller;
 
-import dal.AccountDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,19 +14,25 @@ import model.Account;
 
 /**
  *
- * @author haiph
+ * @author SAP-LAP-FPT
  */
-public class LoginController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+public abstract class BaseAuthController extends HttpServlet {
+
+    private boolean isLoggedIn(HttpServletRequest request)
+    {
+        Account account = (Account) request.getSession().getAttribute("account");
+        if(account != null && account.getUsername() != "-1" && account.getPassword() != "-1")
+            return true;
+        else
+        {
+            /*String url = request.getServletPath();
+            AccountDBContext db = new AccountDBContext();
+            int permission = db.getPermission(account.getUsername(), url);
+            return permission > 0;*/
+            return false;
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -42,12 +46,19 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account acc = new Account();
-        acc.setPassword("-1");
-        acc.setUsername("-1");
-        request.setAttribute("account", acc);
-        request.getRequestDispatcher("view/login.jsp").forward(request, response);
+        if(isLoggedIn(request))
+        {
+            processGet(request, response);
+        }
+        else
+        {
+            response.sendRedirect("login");
+        }
     }
+    protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
+    protected abstract void processPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -60,19 +71,14 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        AccountDBContext db = new AccountDBContext();
-        Account account = db.getAccount(username, password);
-        if(account == null)
+        if(isLoggedIn(request))
         {
-            request.getSession().setAttribute("account", null);
-            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+            //business
+            processPost(request, response);
         }
         else
         {
-           request.getSession().setAttribute("account", account);
-           response.sendRedirect("menu");
+            response.sendRedirect("login");
         }
     }
 

@@ -5,12 +5,15 @@
  */
 package controller;
 
+import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Room;
 
 /**
  *
@@ -39,6 +42,9 @@ public class RoomServlet extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RoomDBContext db = new RoomDBContext();
+        ArrayList<Room> rooms = db.getRooms();
+        request.setAttribute("rooms", rooms);
         request.getRequestDispatcher("view/rooms.jsp").forward(request, response);
     }
 
@@ -53,7 +59,10 @@ public class RoomServlet extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/menu.jsp").forward(request, response);
+        int rid = Integer.parseInt(request.getParameter("roomid"));
+        RoomDBContext db = new RoomDBContext();
+        db.updateRoomStat(rid, true);
+        response.sendRedirect("rooms");
     }
 
     /**

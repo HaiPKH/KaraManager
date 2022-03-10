@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.Timestamp;
+
+
 /**
  *
  * @author haiph
@@ -14,7 +17,7 @@ public class Room {
     private String name;
     private int priceperhour;
     private boolean isUsed;
-    private int timestarted;
+    private Timestamp timestarted;
 
     public int getRid() {
         return rid;
@@ -48,11 +51,11 @@ public class Room {
         this.isUsed = isUsed;
     }
 
-    public int getTimestarted() {
+    public Timestamp getTimestarted() {     
         return timestarted;
     }
 
-    public void setTimestarted(int timestarted) {
+    public void setTimestarted(Timestamp timestarted) {
         this.timestarted = timestarted;
     }
     

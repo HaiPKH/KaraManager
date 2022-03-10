@@ -13,39 +13,27 @@ and open the template in the editor.
     flex-direction: row;
     margin-bottom: 50px;
 }
-.room1{
-    border-style: outset;
-    border: 1px;
-    border-color: black;
-    margin-left: 10%;
+.rooms .room1{
+    background-color: indianred;
+    border: 2px;
+    border-style: solid;
+    border-color: blue;
+    margin-left: 5%;
+    height: 250px;
+    width: 150px;
 }
-.room2{
-    border-style: outset;
-    border: 1px;
-    border-color: black;
-    margin-left: 10%;
+.rooms .room1 .occupied{
+    margin-left: 30px;
+    color: red;
 }
-.room3{
-    border-style: outset;
-    border: 1px;
-    border-color: black;
-    margin-left: 10%;
+.rooms .room1 .vacant{
+    margin-left: 30px;
+    color: greenyellow;
 }
-.room4{
-    border-style: outset;
+.rooms .room1 .Title{
+    text-align: center;
     border: 1px;
-    border-color: black;
-    margin-left: 10%;
-}
-.room5{
-    border-style: outset;
-    border: 1px;
-    border-color: black;
-    margin-left: 10%;
-}
-.room6{
-    border-style: outset;
-    border: 1px;
-    border-color: black;
-    margin-left: 10%;
+    border-style: solid;
+    border-color: bisque;
+    color: wheat;
 }

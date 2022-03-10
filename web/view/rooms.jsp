@@ -4,6 +4,10 @@
     Author     : haiph
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="model.Room"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="model.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,43 +16,42 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="css/rooms.css">
+        <%
+            ArrayList<Room> rooms = (ArrayList<Room>) request.getAttribute("rooms");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String s = sdf.format(r.getTimestarted());
+        %>
     </head>
     <body>
         <div class="rooms">
+            <% for (Room r : rooms) {%>
             <div class="room1">
-                <h4>Room #1</h4>
-                <button class="occupation">Occupied</button>
+                <h3 class="Title">Room <%=r.getName()%></h3>
+                <%if (r.isIsUsed()) {%>
+                <h4>Room is used</h4>
+                <h4>Starting time</h4>
+                <h4> <%=sdf.format(r.getTimestarted())%></h4>
+                <%} else {%>
+                <h4>Room is vacant</h4>
+                <h4>Starting time: </h4> 
+                <h4><%=sdf.format(r.getTimestarted())%></h4>
+                <%}%>
+                <%if (r.isIsUsed()) {%>
+                <button class="occupied" disabled>Occupied</button>
+                <button class="occupied">Create invoice</button>
+                <%} else {%>
+                <form action="rooms" method="POST">
+                    <input type="hidden" value="<%=r.getRid()%>" id="roomid" name="roomid">
+                    <button class="vacant">Vacant</button>
+                </form>
+                <%}%>
             </div>
-
-            <div class="room2">
-                <h4>Room #2</h4>
-                <button class="occupation">Occupied</button>
-            </div>
-
-            <div class="room3">
-                <h4>Room #3</h4>
-                <button class="occupation">Occupied</button>
-            </div>
-
-            <div class="room4">
-                <h4>Room #4</h4>
-                <button class="occupation">Occupied</button>
-            </div>
-
-            <div class="room5">
-                <h4>Room #5</h4>
-                <button class="occupation">Occupied</button>
-            </div>
-
-            <div class="room6">
-                <h4>Room #6</h4>
-                <button class="occupation">Occupied</button>
-            </div>
+            <%}%>
 
             <div style="clear: both; margin-bottom: 10px;"></div>
 
-        </div>
-        <form action="rooms" method="POST">
+        </div> 
+        <form action="menu" method="GET">
             <input type="submit" value="Return"/>
         </form>
     </body>

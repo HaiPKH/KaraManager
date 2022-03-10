@@ -19,7 +19,6 @@
         <%
             ArrayList<Room> rooms = (ArrayList<Room>) request.getAttribute("rooms");
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            String s = sdf.format(r.getTimestarted());
         %>
     </head>
     <body>
@@ -30,11 +29,11 @@
                 <%if (r.isIsUsed()) {%>
                 <h4>Room is used</h4>
                 <h4>Starting time</h4>
-                <h4> <%=sdf.format(r.getTimestarted())%></h4>
+                <h4> <%=r.getTimestarted()%></h4>
                 <%} else {%>
                 <h4>Room is vacant</h4>
                 <h4>Starting time: </h4> 
-                <h4><%=sdf.format(r.getTimestarted())%></h4>
+                <h4><%=r.getTimestarted()%></h4>
                 <%}%>
                 <%if (r.isIsUsed()) {%>
                 <button class="occupied" disabled>Occupied</button>

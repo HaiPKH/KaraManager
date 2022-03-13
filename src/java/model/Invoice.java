@@ -6,7 +6,7 @@
 package model;
 
 import java.sql.Timestamp;
-import java.sql.Date;
+import java.sql.Time;
 /**
  *
  * @author haiph
@@ -14,12 +14,25 @@ import java.sql.Date;
 public class Invoice {
     private int bid;
     private int rid;
-    private Date timestarted;
-    private Date timeended;
-    private Date timeelapsed;
+    private Timestamp timestarted;
+    private Timestamp timeended;
+    private Time timeelapsed;
     private int othercost;
     private int totalcost;
 
+    public Invoice() {
+    }
+
+    public Invoice(int rid, Timestamp timestarted, Timestamp timeended, Time timeelapsed, int othercost, int totalcost) {
+        this.rid = rid;
+        this.timestarted = timestarted;
+        this.timeended = timeended;
+        this.timeelapsed = timeelapsed;
+        this.othercost = othercost;
+        this.totalcost = totalcost;
+    }
+
+    
     public int getBid() {
         return bid;
     }
@@ -36,27 +49,27 @@ public class Invoice {
         this.rid = rid;
     }
 
-    public Date getTimestarted() {
+    public Timestamp getTimestarted() {
         return timestarted;
     }
 
-    public void setTimestarted(Date timestarted) {
+    public void setTimestarted(Timestamp timestarted) {
         this.timestarted = timestarted;
     }
 
-    public Date getTimeended() {
+    public Timestamp getTimeended() {
         return timeended;
     }
 
-    public void setTimeended(Date timeended) {
+    public void setTimeended(Timestamp timeended) {
         this.timeended = timeended;
     }
 
-    public Date getTimeelapsed() {
+    public Time getTimeelapsed() {
         return timeelapsed;
     }
 
-    public void setTimeelapsed(Date timeelapsed) {
+    public void setTimeelapsed(Time timeelapsed) {
         this.timeelapsed = timeelapsed;
     }
 

@@ -28,7 +28,7 @@ and open the template in the editor.
 }
 .rooms .room1 .vacant{
     margin-left: 30px;
-    color: greenyellow;
+    color: #00ff00;
 }
 .rooms .room1 .Title{
     text-align: center;

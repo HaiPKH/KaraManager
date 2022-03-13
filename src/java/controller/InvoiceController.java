@@ -5,21 +5,18 @@
  */
 package controller;
 
-import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Room;
 
 /**
  *
  * @author haiph
  */
-public class RoomServlet extends BaseAuthController {
+public class InvoiceController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,6 +27,23 @@ public class RoomServlet extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet InvoiceController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet InvoiceController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -40,12 +54,9 @@ public class RoomServlet extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDBContext db = new RoomDBContext();
-        ArrayList<Room> rooms = db.getRooms();
-        request.setAttribute("rooms", rooms);
-        request.getRequestDispatcher("view/rooms.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -57,12 +68,9 @@ public class RoomServlet extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int rid = Integer.parseInt(request.getParameter("roomid"));
-        RoomDBContext db = new RoomDBContext();
-        db.updateRoomStat(rid, true);
-        response.sendRedirect("rooms");
+        processRequest(request, response);
     }
 
     /**

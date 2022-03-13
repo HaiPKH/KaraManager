@@ -28,16 +28,19 @@
                 <h3 class="Title">Room <%=r.getName()%></h3>
                 <%if (r.isIsUsed()) {%>
                 <h4>Room is used</h4>
-                <h4>Starting time</h4>
-                <h4> <%=r.getTimestarted()%></h4>
+                <h4>Starting time: </h4>
+                <h4><%=r.getTimestarted()%></h4>
                 <%} else {%>
                 <h4>Room is vacant</h4>
                 <h4>Starting time: </h4> 
-                <h4><%=r.getTimestarted()%></h4>
+                <h4>N/A</h4>
                 <%}%>
                 <%if (r.isIsUsed()) {%>
                 <button class="occupied" disabled>Occupied</button>
-                <button class="occupied">Create invoice</button>
+                <form action="addinvoice" method="GET">
+                    <input type="hidden" value="<%=r.getRid()%>" id="roomid" name="roomid">
+                    <button class="occupied">Create invoice</button>
+                </form>
                 <%} else {%>
                 <form action="rooms" method="POST">
                     <input type="hidden" value="<%=r.getRid()%>" id="roomid" name="roomid">

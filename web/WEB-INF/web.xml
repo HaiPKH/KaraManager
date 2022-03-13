@@ -10,7 +10,15 @@
     </servlet>
     <servlet>
         <servlet-name>RoomServlet</servlet-name>
-        <servlet-class>controller.RoomServlet</servlet-class>
+        <servlet-class>controller.RoomController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertController</servlet-name>
+        <servlet-class>controller.InsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InvoiceController</servlet-name>
+        <servlet-class>controller.InvoiceController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>RoomServlet</servlet-name>
         <url-pattern>/rooms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertController</servlet-name>
+        <url-pattern>/addinvoice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InvoiceController</servlet-name>
+        <url-pattern>/invoice</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

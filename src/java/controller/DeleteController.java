@@ -6,21 +6,36 @@
 package controller;
 
 import dal.InvoiceDBContext;
-import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Invoice;
 
 /**
  *
  * @author haiph
  */
-public class InvoiceController extends BaseAuthController {
+public class DeleteController extends BaseAuthController {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        int bid = Integer.parseInt(request.getParameter("bid"));
+        InvoiceDBContext idb = new InvoiceDBContext();
+        idb.deleteInvoice(bid);
+        response.sendRedirect("invoice");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,16 +49,7 @@ public class InvoiceController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        InvoiceDBContext idb = new InvoiceDBContext();
-        RoomDBContext rdb = new RoomDBContext();
-        ArrayList<Invoice> invoices = idb.getInvoices();
-        ArrayList<String> roomname = new ArrayList<>();
-        for(Invoice i: invoices){
-            roomname.add(rdb.getRoom(i.getRid()).getName());
-        }
-        request.setAttribute("roomnames", roomname);
-        request.setAttribute("invoices", invoices);
-        request.getRequestDispatcher("view/invoice.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -57,7 +63,7 @@ public class InvoiceController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /**

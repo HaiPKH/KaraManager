@@ -11,10 +11,10 @@ and open the template in the editor.
 .rooms{
     display: flex;
     flex-direction: row;
-    margin-bottom: 50px;    
+    margin-bottom: 50px;
 }
 .rooms .room1{
-    background-color: limegreen;
+    background-color: indianred;
     border: 2px;
     border-style: solid;
     border-color: blue;

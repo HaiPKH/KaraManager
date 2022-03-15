@@ -71,12 +71,13 @@ public class InvoiceDBContext extends DBContext {
     public ArrayList<Invoice> getInvoices(){
         ArrayList<Invoice> invoices = new ArrayList<>();
         try {
-            String sql = "SELECT rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
+            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
                     + "   ORDER BY bid ASC";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Invoice invoice = new Invoice();
+                invoice.setBid(rs.getInt("bid"));
                 invoice.setRid(rs.getInt("rid"));
                 invoice.setDatecreated(rs.getTimestamp("datecreated"));
                 invoice.setTimestarted(rs.getTimestamp("timestarted"));
@@ -90,5 +91,33 @@ public class InvoiceDBContext extends DBContext {
             Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return invoices;
+    }
+    
+    public void deleteInvoice(int bid){
+                String sql = "DELETE Invoice\n" +
+                             " WHERE [bid] = ?";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, bid);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            if(stm != null)
+                try {
+                    stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(connection != null)
+                try {
+                    connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

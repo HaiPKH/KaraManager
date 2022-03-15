@@ -24,7 +24,7 @@
     <body>
         <div class="rooms">
             <% for (Room r : rooms) {%>
-            <div class="room1" id="room1">
+            <div class="room1" id="<%=r.getRid()%>">
                 <h3 class="Title">Room <%=r.getName()%></h3>
                 <%if (r.isIsUsed()) {%>
                 <h4>Room is used</h4>
@@ -36,7 +36,7 @@
                     <button class="occupied">Create invoice</button>
                 </form>
                     
-                <%} else {%>                
+                <%} else {%>             
                 <h4>Room is vacant</h4>
                 <h4>Starting time: </h4> 
                 <h4>N/A</h4>
@@ -46,10 +46,13 @@
                 </form>
                 <%}%>
             </div>
+                <%if (!r.isIsUsed()) {%>
+                <script>document.getElementById(<%=r.getRid()%>).style.backgroundColor = "limegreen";</script>
+                <%}%>
             <%}%>
 
             <div style="clear: both; margin-bottom: 10px;"></div>
-
+        
         </div> 
         <form action="menu" method="GET">
             <input type="submit" value="Return"/>

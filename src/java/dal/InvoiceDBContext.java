@@ -67,8 +67,8 @@ public class InvoiceDBContext extends DBContext {
         }
 
     }
-    
-    public ArrayList<Invoice> getInvoices(){
+
+    public ArrayList<Invoice> getInvoices() {
         ArrayList<Invoice> invoices = new ArrayList<>();
         try {
             String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
@@ -92,10 +92,10 @@ public class InvoiceDBContext extends DBContext {
         }
         return invoices;
     }
-    
-    public void deleteInvoice(int bid){
-                String sql = "DELETE Invoice\n" +
-                             " WHERE [bid] = ?";
+
+    public void deleteInvoice(int bid) {
+        String sql = "DELETE Invoice\n"
+                + " WHERE [bid] = ?";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -103,21 +103,79 @@ public class InvoiceDBContext extends DBContext {
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            if(stm != null)
+        } finally {
+            if (stm != null) {
                 try {
                     stm.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            if(connection != null)
+            if (connection != null) {
                 try {
                     connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+    }
+
+    public void updateInvoice(int bid, int othercost, int totalcost) {
+        String sql = "UPDATE [Invoice]\n"
+                + "   SET [othercost] = ?\n"
+                + "   ,[totalcost] = ?\n"
+                + " WHERE [bid] = ?";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, othercost);
+            stm.setInt(2, totalcost);
+            stm.setInt(3, bid);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+    }
+
+    public Invoice getInvoice(int bid) {
+        try {
+            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
+                    + "WHERE bid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, bid);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setBid(rs.getInt("bid"));
+                invoice.setRid(rs.getInt("rid"));
+                invoice.setDatecreated(rs.getTimestamp("datecreated"));
+                invoice.setTimestarted(rs.getTimestamp("timestarted"));
+                invoice.setTimeended(rs.getTimestamp("timeended"));
+                invoice.setTimeelapsed(rs.getTime("timeelapsed"));
+                invoice.setOthercost(rs.getInt("othercost"));
+                invoice.setTotalcost(rs.getInt("totalcost"));
+                return invoice;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

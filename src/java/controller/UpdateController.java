@@ -8,9 +8,7 @@ package controller;
 import dal.InvoiceDBContext;
 import dal.RoomDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Time;
-import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,7 @@ import model.Room;
  *
  * @author haiph
  */
-public class InsertController extends BaseAuthController {
+public class UpdateController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,11 +43,14 @@ public class InsertController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int rid = Integer.parseInt(request.getParameter("roomid"));
-        RoomDBContext rdb = new RoomDBContext();
-        Room room = rdb.getRoom(rid);
-        request.setAttribute("room", room);      
-        request.getRequestDispatcher("view/insert.jsp").forward(request, response);
+        int bid = Integer.parseInt(request.getParameter("bid"));
+        InvoiceDBContext idb = new InvoiceDBContext();
+        RoomDBContext rdb = new RoomDBContext();       
+        Invoice inv = idb.getInvoice(bid);
+        Room room = rdb.getRoom(inv.getRid());
+        request.setAttribute("invoice", inv);
+        request.setAttribute("room", room);
+        request.getRequestDispatcher("view/update.jsp").forward(request, response);
     }
 
     /**
@@ -63,34 +64,19 @@ public class InsertController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int raw_rid = Integer.parseInt(request.getParameter("roomid"));
-        Timestamp raw_timeStarted = Timestamp.valueOf(request.getParameter("timestarted"));
-        Timestamp raw_timeEnded = Timestamp.valueOf(request.getParameter("timeended"));
-        Time raw_timeElapsed = Time.valueOf(request.getParameter("timeelapsed"));
-        int raw_otherCost;
-        try{
-            raw_otherCost = Integer.parseInt(request.getParameter("others"));
-        }catch(NumberFormatException ne){
-            raw_otherCost = 0;
-        }
-        InvoiceDBContext idb = new InvoiceDBContext();
-        RoomDBContext rdb = new RoomDBContext();
-        Room room = rdb.getRoom(raw_rid);
-        int priceperhour = room.getPriceperhour();
-        int raw_totalcost;
+        int bid = Integer.parseInt(request.getParameter("bid"));
+        Time timeElapsed = Time.valueOf(request.getParameter("timeelapsed"));
+        int priceperhour = Integer.parseInt(request.getParameter("priceperhour"));
         int priceper10mins = priceperhour / 6;
-        raw_totalcost = priceperhour * raw_timeElapsed.getHours() + priceper10mins *(raw_timeElapsed.getMinutes()/ 10) + raw_otherCost;
-        Invoice inv = new Invoice();
-        inv.setRid(raw_rid);
-        inv.setDatecreated(raw_timeStarted);
-        inv.setTimestarted(raw_timeStarted);
-        inv.setTimeended(raw_timeEnded);
-        inv.setTimeelapsed(raw_timeElapsed);
-        inv.setOthercost(raw_otherCost);
-        inv.setTotalcost(raw_totalcost);
-        idb.insertInvoice(inv);
-        rdb.updateRoomStat(raw_rid, false, null);
+        int othercost;
+        try{
+            othercost = Integer.parseInt(request.getParameter("othercost"));
+        }catch(NumberFormatException ne){
+            othercost = 0;
+        }
+        int totalcost = priceperhour * timeElapsed.getHours() + priceper10mins *(timeElapsed.getMinutes()/ 10) + othercost;
+        InvoiceDBContext idb = new InvoiceDBContext();
+        idb.updateInvoice(bid, othercost, totalcost);
         response.sendRedirect("invoice");
     }
 

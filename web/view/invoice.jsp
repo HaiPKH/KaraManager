@@ -41,7 +41,7 @@
                     <td>Others</td>
                     <td>Total</td>
                     <td> </td>
-
+                    <td> </td>
                 </tr>
                 <%                if (!invoices.isEmpty()) {
                         for (int i = 0; i < invoices.size(); i++) {
@@ -57,6 +57,9 @@
                     <td><%=invoices.get(i).getTotalcost()%></td>
                     <td>
                         <a href="#" onclick="deleteInvoice(<%=invoices.get(i).getBid()%>)"><button>Delete</button></a>
+                    </td>
+                    <td>
+                        <a href="update?bid=<%=invoices.get(i).getBid()%>"><button>Update</button></a>
                     </td>
                 </tr>
                 <%  }

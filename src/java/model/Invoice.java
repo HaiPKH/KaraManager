@@ -14,6 +14,7 @@ import java.sql.Time;
 public class Invoice {
     private int bid;
     private int rid;
+    private Timestamp datecreated;
     private Timestamp timestarted;
     private Timestamp timeended;
     private Time timeelapsed;
@@ -23,16 +24,6 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(int rid, Timestamp timestarted, Timestamp timeended, Time timeelapsed, int othercost, int totalcost) {
-        this.rid = rid;
-        this.timestarted = timestarted;
-        this.timeended = timeended;
-        this.timeelapsed = timeelapsed;
-        this.othercost = othercost;
-        this.totalcost = totalcost;
-    }
-
-    
     public int getBid() {
         return bid;
     }
@@ -47,6 +38,14 @@ public class Invoice {
 
     public void setRid(int rid) {
         this.rid = rid;
+    }
+
+    public Timestamp getDatecreated() {
+        return datecreated;
+    }
+
+    public void setDatecreated(Timestamp datecreated) {
+        this.datecreated = datecreated;
     }
 
     public Timestamp getTimestarted() {
@@ -88,6 +87,6 @@ public class Invoice {
     public void setTotalcost(int totalcost) {
         this.totalcost = totalcost;
     }
-    
-    
-}
+
+}   
+

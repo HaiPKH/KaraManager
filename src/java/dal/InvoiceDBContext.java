@@ -6,7 +6,9 @@
 package dal;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Invoice;
@@ -23,8 +25,8 @@ public class InvoiceDBContext extends DBContext {
                 + "           ,[datecreated]\n"
                 + "           ,[timestarted]\n"
                 + "           ,[timeended]\n"
-                + "           ,[timeelapsed])\n"
-                + "           ,[othercost])\n"
+                + "           ,[timeelapsed]\n"
+                + "           ,[othercost]\n"
                 + "           ,[totalcost])\n"
                 + "     VALUES\n"
                 + "           (?\n"
@@ -64,5 +66,29 @@ public class InvoiceDBContext extends DBContext {
             }
         }
 
+    }
+    
+    public ArrayList<Invoice> getInvoices(){
+        ArrayList<Invoice> invoices = new ArrayList<>();
+        try {
+            String sql = "SELECT rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
+                    + "   ORDER BY bid ASC";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setRid(rs.getInt("rid"));
+                invoice.setDatecreated(rs.getTimestamp("datecreated"));
+                invoice.setTimestarted(rs.getTimestamp("timestarted"));
+                invoice.setTimeended(rs.getTimestamp("timeended"));
+                invoice.setTimeelapsed(rs.getTime("timeelapsed"));
+                invoice.setOthercost(rs.getInt("othercost"));
+                invoice.setTotalcost(rs.getInt("totalcost"));
+                invoices.add(invoice);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return invoices;
     }
 }

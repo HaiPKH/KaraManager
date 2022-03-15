@@ -4,6 +4,8 @@
     Author     : haiph
 --%>
 
+<%@page import="java.time.Duration"%>
+<%@page import="java.time.Instant"%>
 <%@page import="java.sql.Time"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="model.Room"%>
@@ -11,31 +13,77 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            .invoice {
+                margin: auto;
+                width: 30%;
+                border: 3px solid #73AD21;
+                padding: 10px;
+                text-align: center;
+                background-color: #ff6666
+            }
+        </style>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <%
             Room room = (Room) request.getAttribute("room");
             Timestamp now = new Timestamp(System.currentTimeMillis());
-            Time time = new Time(now.getHours() - room.getTimestarted().getHours()
-                            , now.getMinutes()- room.getTimestarted().getMinutes()
-                            , now.getSeconds()- room.getTimestarted().getSeconds());
+            Instant current = now.toInstant();
+            Instant timestarted = room.getTimestarted().toInstant();
+            Duration elapsed = Duration.between(timestarted, current);
+            Long l = elapsed.getSeconds();
+            int secondsElapsed = l.intValue();
+            Time time = new Time(secondsElapsed / 3600,
+                                (secondsElapsed % 3600) / 60,
+                                secondsElapsed % 60);
         %>
     </head>
     <body>
-        <h2>Invoice:</h2>
-        <form action="addinvoice" method="POST">
-            <input type="hidden" value="<%=room.getRid()%>" id="roomid" name="roomid">
-            <input type="hidden" value="<%=room.getTimestarted()%>" id="timestarted" name="timestarted">
-            <input type="hidden" value="<%=now%>" id="timeended" name="timeended">
-            <input type="hidden" value="<%=time%>" id="timeelapsed" name="timeelapsed">
-            ID: <h4><%= room.getRid()%></h4>
-            Name: <h4><%= room.getName()%></h4>
-            Date created: <h4><%= room.getTimestarted() %></h4>
-            Time Started: <h4><%= room.getTimestarted().getHours()%> : <%= room.getTimestarted().getMinutes()%> : <%= room.getTimestarted().getSeconds()%></h4>           
-            Time Ended:  <h4><%=now.getHours()%> : <%=now.getMinutes()%> : <%=now.getSeconds()%> </h4> <br/>          
-            Time Elapsed: <h4><%= now.getHours() - room.getTimestarted().getHours()%>:<%= now.getMinutes()- room.getTimestarted().getMinutes()%></h4>
-            Others: <input type="text" name = "others" id="others"><br/>
-            <input type="submit" value="Save"/>
-        </form>
+        <div class="invoice">
+            <h2>Invoice:</h2>
+            <form action="addinvoice" method="POST">              
+                <input type="hidden" value="<%=room.getRid()%>" id="roomid" name="roomid">
+                <input type="hidden" value="<%=room.getTimestarted()%>" id="timestarted" name="timestarted">
+                <input type="hidden" value="<%=now%>" id="timeended" name="timeended">
+                <input type="hidden" value="<%=time%>" id="timeelapsed" name="timeelapsed">
+                <table class="invoicetable">    
+                    <tr>
+                        <th>RoomID</th>
+                        <td><%= room.getRid()%></td>
+                    </tr>
+                    <tr>
+                        <th>Name:</th>
+                        <td><%= room.getName()%></td>
+                    </tr>
+                    <tr>
+                        <th>Date created:</th>
+                        <td><%= room.getTimestarted()%></td>
+                    </tr>
+                    <tr>
+                        <th>Time Started:</th>
+                        <td><%= room.getTimestarted().getHours()%> : <%= room.getTimestarted().getMinutes()%> : <%= room.getTimestarted().getSeconds()%></td>
+                    </tr>
+                    <tr>
+                        <th>Time Ended:</th>
+                        <td><%= now.getHours()%> : <%=now.getMinutes()%> : <%=now.getSeconds()%></td>
+                    </tr>           
+                    <tr>
+                        <th>Time Elapsed:</th>
+                        <td><%=time.getHours()%>:<%=time.getMinutes()%>:<%=time.getSeconds()%></td>
+                    </tr> 
+                    <tr>
+                        <th>Others:</th>
+                        <td><input type="text" name = "others" id="others"></td>
+                    </tr>     
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" value="Save"/></td>
+                    </tr>                      
+                </table>
+            </form>          
+        </div>
+           <form action="rooms" method="GET">
+                <input type="submit" value="Return"/>
+            </form>         
     </body>
 </html>

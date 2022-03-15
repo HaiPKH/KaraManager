@@ -48,8 +48,7 @@ public class InsertController extends BaseAuthController {
         int rid = Integer.parseInt(request.getParameter("roomid"));
         RoomDBContext rdb = new RoomDBContext();
         Room room = rdb.getRoom(rid);
-        request.setAttribute("room", room);
-        rdb.updateRoomStat(rid, false, null);
+        request.setAttribute("room", room);      
         request.getRequestDispatcher("view/insert.jsp").forward(request, response);
     }
 
@@ -64,25 +63,35 @@ public class InsertController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         int raw_rid = Integer.parseInt(request.getParameter("roomid"));
         Timestamp raw_timeStarted = Timestamp.valueOf(request.getParameter("timestarted"));
         Timestamp raw_timeEnded = Timestamp.valueOf(request.getParameter("timeended"));
         Time raw_timeElapsed = Time.valueOf(request.getParameter("timeelapsed"));
-        int raw_otherCost = Integer.parseInt(request.getParameter("others"));
+        int raw_otherCost;
+        if (!request.getParameter("others").equals("")) {
+            raw_otherCost = Integer.parseInt(request.getParameter("others"));
+        }else{
+            raw_otherCost = 0;
+        }
         InvoiceDBContext idb = new InvoiceDBContext();
         RoomDBContext rdb = new RoomDBContext();
         Room room = rdb.getRoom(raw_rid);
         int priceperhour = room.getPriceperhour();
         int raw_totalcost;
-        if (raw_timeStarted.getMinutes() > 30) {
-            raw_totalcost = priceperhour * raw_timeElapsed.getHours() + priceperhour/2 + raw_otherCost;
-        }else{
-            raw_totalcost = priceperhour * raw_timeElapsed.getHours() + raw_otherCost;
-        }
-        Invoice inv = new Invoice(raw_rid, raw_timeStarted, raw_timeEnded, raw_timeElapsed, raw_otherCost, raw_totalcost);
+        int priceper10mins = priceperhour / 6;
+        raw_totalcost = priceperhour * raw_timeElapsed.getHours() + priceper10mins *(raw_timeElapsed.getMinutes()/ 10) + raw_otherCost;
+        Invoice inv = new Invoice();
+        inv.setRid(raw_rid);
+        inv.setDatecreated(raw_timeStarted);
+        inv.setTimestarted(raw_timeStarted);
+        inv.setTimeended(raw_timeEnded);
+        inv.setTimeelapsed(raw_timeElapsed);
+        inv.setOthercost(raw_otherCost);
+        inv.setTotalcost(raw_totalcost);
         idb.insertInvoice(inv);
-        response.sendRedirect("rooms");
-        //request.getRequestDispatcher("view/rooms.jsp").forward(request, response);
+        rdb.updateRoomStat(raw_rid, false, null);
+        response.sendRedirect("invoice");
     }
 
     /**

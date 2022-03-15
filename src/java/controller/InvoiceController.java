@@ -5,12 +5,16 @@
  */
 package controller;
 
+import dal.InvoiceDBContext;
+import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Invoice;
 
 /**
  *
@@ -56,7 +60,16 @@ public class InvoiceController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        InvoiceDBContext idb = new InvoiceDBContext();
+        RoomDBContext rdb = new RoomDBContext();
+        ArrayList<Invoice> invoices = idb.getInvoices();
+        ArrayList<String> roomname = new ArrayList<>();
+        for(Invoice i: invoices){
+            roomname.add(rdb.getRoom(i.getRid()).getName());
+        }
+        request.setAttribute("roomnames", roomname);
+        request.setAttribute("invoices", invoices);
+        request.getRequestDispatcher("view/invoice.jsp").forward(request, response);
     }
 
     /**

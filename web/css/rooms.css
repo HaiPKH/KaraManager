@@ -7,29 +7,54 @@ and open the template in the editor.
     Created on : Mar 9, 2022, 11:06:56 PM
     Author     : haiph
 */
-
-.rooms{
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 50px;
+body{
+    background-color: gainsboro;
 }
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.container form {
+    display:inline-block;
+}
+.btn1{
+    margin-left:40%;
+    float:left;
+    margin-right:50px;
+}
+.btn2{
+
+    float:next;
+}
+.column {
+    float: left;
+    width: 30%;
+    margin-left:200px;
+    margin-right:20px;
+    margin-bottom:20px;
+}
+
+
 .rooms .room1{
     background-color: indianred;
     border: 2px;
     border-style: solid;
     border-color: blue;
     margin-left: 3%;
-    height: 250px;
+    height: 280px;
     width: 150px;
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 5px 10px #888888;
 }
 
 .rooms .room1 .occupied{
-    margin-left: 30px;
+    text-align: center;
     color: red;
 }
 .rooms .room1 .vacant{
-    margin-left: 30px;
-    color: #00ff00;
+    text-align: center;
 }
 .rooms .room1 .Title{
     text-align: center;
@@ -37,4 +62,7 @@ and open the template in the editor.
     border-style: solid;
     border-color: bisque;
     color: wheat;
+}
+.rooms .room1 .update{
+    text-align: center;
 }

@@ -57,7 +57,7 @@
                     </tr>
                     <tr>
                         <th>Date created:</th>
-                        <td><%= room.getTimestarted()%></td>
+                        <td><%= room.getTimestarted().getDate()%>/<%= room.getTimestarted().getMonth()%>/<%= room.getTimestarted().getYear()+ 1900%></td>
                     </tr>
                     <tr>
                         <th>Time Started:</th>

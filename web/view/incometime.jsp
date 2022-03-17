@@ -19,8 +19,8 @@
         <h4 style="color: red"><%=error%></h4>
         <%}%>
         <form action="income" method="POST">
-            Enter starting date<input type="Date" name = "startdate">
-            Enter ending date<input type="Date" name = "enddate">
+            Enter starting date<input type="Date" name = "startdate"><br/>
+            Enter ending date<input type="Date" name = "enddate"><br/>
             <input type="submit" value="Check income">
         </form>
     </body>

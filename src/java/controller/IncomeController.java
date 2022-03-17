@@ -59,6 +59,12 @@ public class IncomeController extends BaseAuthController {
             throws ServletException, IOException {
         Date d1 = null;
         Date d2 = null;
+        int pageIndex;
+        try {
+            pageIndex = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            pageIndex = 1;
+        }
         try {
             d1 = Date.valueOf(request.getParameter("startdate"));
             d2 = Date.valueOf(request.getParameter("enddate"));
@@ -73,9 +79,13 @@ public class IncomeController extends BaseAuthController {
             request.getRequestDispatcher("view/incometime.jsp").forward(request, response);
         }
         InvoiceDBContext idb = new InvoiceDBContext();
-        //ArrayList<Invoice> invoices = idb.getInvoicesWithDate(d1, d2);
+        ArrayList<Invoice> invoices = idb.getInvoicesWithDate(pageIndex, d1, d2);
         int total = idb.getTotal(d1, d2);
-        //request.setAttribute("invoices", invoices);
+        request.setAttribute("invoices", invoices);
+        int count = idb.count("WHERE datecreated BETWEEN '"+d1+"' AND '"+d2+"'");
+        int totalpage = (count % 10 == 0) ? (count / 10) : (count / 10) + 1;
+        request.setAttribute("totalpage", totalpage);
+        request.setAttribute("pageindex", pageIndex);
         request.setAttribute("total", total);
         request.setAttribute("startdate", d1);
         request.setAttribute("enddate", d2);

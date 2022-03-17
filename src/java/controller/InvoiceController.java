@@ -47,7 +47,7 @@ public class InvoiceController extends BaseAuthController {
         for(Invoice i: invoices){
             roomname.add(rdb.getRoom(i.getRid()).getName());
         }
-        int count = idb.count();
+        int count = idb.count("");
         int totalpage = (count%10==0)?(count/10):(count/10)+1;
         request.setAttribute("totalpage", totalpage);
         request.setAttribute("pageindex", pageIndex);

@@ -96,7 +96,7 @@ public class RoomDBContext extends DBContext {
             }
         }
     }
-    
+
     public void insertRoom(Room room) {
         String sql = "INSERT INTO [Room]\n"
                 + "           ([name]\n"
@@ -114,7 +114,7 @@ public class RoomDBContext extends DBContext {
             stm.setString(1, room.getName());
             stm.setInt(2, room.getPriceperhour());
             stm.setBoolean(3, room.isIsUsed());
-            stm.setTimestamp(4, room.getTimestarted());           
+            stm.setTimestamp(4, room.getTimestarted());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,6 +131,38 @@ public class RoomDBContext extends DBContext {
                     connection.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void updateRoom(int rid, String name, int priceperhour) {
+        String sql = "UPDATE [Room]\n"
+                + "   SET [name] = ?\n"
+                + "     ,[priceperhour] = ?\n"
+                + " WHERE [rid] = ?";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, name);
+            stm.setInt(2, priceperhour);
+            stm.setInt(3, rid);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

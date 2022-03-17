@@ -184,9 +184,12 @@ public class InvoiceDBContext extends DBContext {
         return null;
     }
 
-    public int count() {
+    public int count(String extra) {
         try {
-            String sql = "SELECT COUNT(*) as Total FROM Invoice";
+            String sql = "SELECT COUNT(*) as Total FROM Invoice\n";
+            if(!extra.isEmpty()){
+                sql += extra;
+            }
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -198,14 +201,19 @@ public class InvoiceDBContext extends DBContext {
         return -1;
     }
 
-    public ArrayList<Invoice> getInvoicesWithDate(Date d1, Date d2) {
+    public ArrayList<Invoice> getInvoicesWithDate(int pageindex, Date d1, Date d2) {
         ArrayList<Invoice> invoices = new ArrayList<>();
         try {
-            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
-                    + "  WHERE datecreated BETWEEN ? AND ?";
+            String sql = " SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM\n"
+                    + "(SELECT *,ROW_NUMBER() OVER (ORDER BY bid ASC) as row_index FROM Invoice) tbl\n"
+                    + " WHERE row_index >= (?-1)* 5 + 1\n"
+                    + " AND row_index <= ? * 5\n"
+                    + " AND datecreated BETWEEN ? AND ?";           
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setDate(1, d1);
-            stm.setDate(2, d2);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pageindex);
+            stm.setDate(3, d1);
+            stm.setDate(4, d2);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Invoice invoice = new Invoice();

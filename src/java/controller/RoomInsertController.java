@@ -42,8 +42,8 @@ public class RoomInsertController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int priceperhour = 0;
-        request.setAttribute("invalidprice", priceperhour);
+        int error = 0;
+        request.setAttribute("errorCode", error);
         request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);      
     }
 
@@ -58,19 +58,27 @@ public class RoomInsertController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       int error;
        String roomname = request.getParameter("roomname");
+       if(roomname.isEmpty()){
+           error = 1;
+           request.setAttribute("errorCode", error);
+           request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);
+           return;
+       }
        int priceperhour = 0;
        try{
            priceperhour = Integer.parseInt(request.getParameter("priceperhour"));
        }catch(NumberFormatException ex){
-           priceperhour = -1;
-           request.setAttribute("invalidprice", priceperhour);
+           error = -1;
+           request.setAttribute("errorCode", error);
            request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);
        }
        if(priceperhour <= 0){
-           priceperhour = -1;
-           request.setAttribute("invalidprice", priceperhour);
+           error = -1;
+           request.setAttribute("errorCode", error);
            request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);
+           return;
        }
         RoomDBContext rdb = new RoomDBContext();
         Room room = new Room();

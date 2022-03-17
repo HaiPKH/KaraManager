@@ -28,6 +28,18 @@
         <servlet-name>UpdateController</servlet-name>
         <servlet-class>controller.UpdateController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RoomInsertController</servlet-name>
+        <servlet-class>controller.RoomInsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoomUpdateController</servlet-name>
+        <servlet-class>controller.RoomUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IncomeController</servlet-name>
+        <servlet-class>controller.IncomeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -55,6 +67,18 @@
     <servlet-mapping>
         <servlet-name>UpdateController</servlet-name>
         <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomInsertController</servlet-name>
+        <url-pattern>/room/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomUpdateController</servlet-name>
+        <url-pattern>/room/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IncomeController</servlet-name>
+        <url-pattern>/income</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

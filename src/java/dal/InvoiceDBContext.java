@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,12 +69,16 @@ public class InvoiceDBContext extends DBContext {
 
     }
 
-    public ArrayList<Invoice> getInvoices() {
+    public ArrayList<Invoice> getInvoices(int pageindex) {
         ArrayList<Invoice> invoices = new ArrayList<>();
         try {
-            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
-                    + "   ORDER BY bid ASC";
+            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM\n"
+                    + "  (SELECT *,ROW_NUMBER() OVER (ORDER BY bid ASC) as row_index FROM Invoice) tbl"
+                    + "   WHERE row_index >= (?-1)*10 + 1"
+                    + "   AND row_index <= ? * 10";
             PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pageindex);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Invoice invoice = new Invoice();
@@ -177,5 +182,64 @@ public class InvoiceDBContext extends DBContext {
             Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public int count() {
+        try {
+            String sql = "SELECT COUNT(*) as Total FROM Invoice";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    public ArrayList<Invoice> getInvoicesWithDate(Date d1, Date d2) {
+        ArrayList<Invoice> invoices = new ArrayList<>();
+        try {
+            String sql = "SELECT bid ,rid, datecreated , timestarted , timeended, timeelapsed, othercost, totalcost FROM Invoice\n"
+                    + "  WHERE datecreated BETWEEN ? AND ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, d1);
+            stm.setDate(2, d2);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setBid(rs.getInt("bid"));
+                invoice.setRid(rs.getInt("rid"));
+                invoice.setDatecreated(rs.getTimestamp("datecreated"));
+                invoice.setTimestarted(rs.getTimestamp("timestarted"));
+                invoice.setTimeended(rs.getTimestamp("timeended"));
+                invoice.setTimeelapsed(rs.getTime("timeelapsed"));
+                invoice.setOthercost(rs.getInt("othercost"));
+                invoice.setTotalcost(rs.getInt("totalcost"));
+                invoices.add(invoice);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return invoices;
+    }
+
+    public int getTotal(Date d1, Date d2) {
+        int total = 0;
+        try {
+            String sql = "SELECT SUM(totalcost) AS Total FROM Invoice\n"
+                    + "  WHERE datecreated BETWEEN ? AND ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, d1);
+            stm.setDate(2, d2);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("Total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
     }
 }

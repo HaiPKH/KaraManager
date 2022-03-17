@@ -95,6 +95,45 @@ public class RoomDBContext extends DBContext {
                 }
             }
         }
+    }
+    
+    public void insertRoom(Room room) {
+        String sql = "INSERT INTO [Room]\n"
+                + "           ([name]\n"
+                + "           ,[priceperhour]\n"
+                + "           ,[isused]\n"
+                + "           ,[timestarted])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, room.getName());
+            stm.setInt(2, room.getPriceperhour());
+            stm.setBoolean(3, room.isIsUsed());
+            stm.setTimestamp(4, room.getTimestarted());           
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(RoomDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
 
     }
 }

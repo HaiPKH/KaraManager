@@ -15,10 +15,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="css/rooms.css">
-        <script src="js/rooms.js" type="text/javascript"></script>
         <%
             ArrayList<Room> rooms = (ArrayList<Room>) request.getAttribute("rooms");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         %>
     </head>
     <body>
@@ -35,7 +33,7 @@
                     <input type="hidden" value="<%=r.getRid()%>" id="roomid" name="roomid">
                     <button class="occupied">Create invoice</button>
                 </form>
-                    
+
                 <%} else {%>             
                 <h4>Room is vacant</h4>
                 <h4>Starting time: </h4> 
@@ -46,16 +44,24 @@
                 </form>
                 <%}%>
             </div>
-                <%if (!r.isIsUsed()) {%>
-                <script>document.getElementById(<%=r.getRid()%>).style.backgroundColor = "limegreen";</script>
+                <%if (!r.isIsUsed()) {%>    
+                    <script>document.getElementById(<%=r.getRid()%>).style.backgroundColor = "limegreen";</script>
                 <%}%>
             <%}%>
 
             <div style="clear: both; margin-bottom: 10px;"></div>
-        
+
         </div> 
         <form action="menu" method="GET">
             <input type="submit" value="Return"/>
+        </form>
+            
+       <!-- <a href = "/KaraManager/room/insert"><button>Add rooms</button></a>-->
+        <form action="/KaraManager/room/insert" method="GET">
+            <input type="submit" value="Add rooms"/>
+        </form>
+        <form action="#" method="#">
+            <input type="submit" value="Update rooms"/>
         </form>
     </body>
 </html>

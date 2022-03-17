@@ -15,7 +15,8 @@
         <%
             ArrayList<Invoice> invoices = (ArrayList<Invoice>) request.getAttribute("invoices");
             ArrayList<String> roomnames = (ArrayList<String>) request.getAttribute("roomnames");
-
+            Integer pageindex = (Integer) request.getAttribute("pageindex");
+            Integer totalpage = (Integer) request.getAttribute("totalpage");
         %>
         <script>
             function deleteInvoice(bid)
@@ -27,6 +28,8 @@
                 }
             }
         </script>
+        <script src="js/paging.js" type="text/javascript"></script>
+        <link href="css/paging.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class = "invoices">        
@@ -70,6 +73,10 @@
                 </tr>
                 <%}%>
             </table>
+            <div id="container" class="paging"> </div>
+            <script>
+                paging("container",<%=pageindex%>,<%=totalpage%>, 1);
+            </script>
             <form action="menu" method="GET">
                 <input type="submit" value="Return"/>
             </form>

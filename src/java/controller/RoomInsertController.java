@@ -5,22 +5,30 @@
  */
 package controller;
 
-import dal.InvoiceDBContext;
 import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Invoice;
+import model.Room;
 
 /**
  *
  * @author haiph
  */
-public class InvoiceController extends BaseAuthController {
+public class RoomInsertController extends BaseAuthController {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,26 +42,9 @@ public class InvoiceController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int pageIndex;
-        try{
-            pageIndex = Integer.parseInt(request.getParameter("page"));
-        }catch(NumberFormatException e){
-            pageIndex = 1;
-        }
-        InvoiceDBContext idb = new InvoiceDBContext();
-        RoomDBContext rdb = new RoomDBContext();
-        ArrayList<Invoice> invoices = idb.getInvoices(pageIndex);
-        ArrayList<String> roomname = new ArrayList<>();
-        for(Invoice i: invoices){
-            roomname.add(rdb.getRoom(i.getRid()).getName());
-        }
-        int count = idb.count();
-        int totalpage = (count%10==0)?(count/10):(count/10)+1;
-        request.setAttribute("totalpage", totalpage);
-        request.setAttribute("pageindex", pageIndex);
-        request.setAttribute("roomnames", roomname);
-        request.setAttribute("invoices", invoices);
-        request.getRequestDispatcher("view/invoice.jsp").forward(request, response);
+        int priceperhour = 0;
+        request.setAttribute("invalidprice", priceperhour);
+        request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);      
     }
 
     /**
@@ -67,7 +58,28 @@ public class InvoiceController extends BaseAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       String roomname = request.getParameter("roomname");
+       int priceperhour = 0;
+       try{
+           priceperhour = Integer.parseInt(request.getParameter("priceperhour"));
+       }catch(NumberFormatException ex){
+           priceperhour = -1;
+           request.setAttribute("invalidprice", priceperhour);
+           request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);
+       }
+       if(priceperhour <= 0){
+           priceperhour = -1;
+           request.setAttribute("invalidprice", priceperhour);
+           request.getRequestDispatcher("/view/roominsert.jsp").forward(request, response);
+       }
+        RoomDBContext rdb = new RoomDBContext();
+        Room room = new Room();
+        room.setName(roomname);
+        room.setPriceperhour(priceperhour);
+        room.setIsUsed(false);
+        room.setTimestarted(null);
+        rdb.insertRoom(room);
+        response.sendRedirect("/KaraManager/rooms");
     }
 
     /**

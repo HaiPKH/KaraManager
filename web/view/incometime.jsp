@@ -18,7 +18,7 @@
         <%if(error != "null"){%>
         <h4 style="color: red"><%=error%></h4>
         <%}%>
-        <form action="income" method="POST">
+        <form action="income" method="GET">
             Enter starting date<input type="Date" name = "startdate"><br/>
             Enter ending date<input type="Date" name = "enddate"><br/>
             <input type="submit" value="Check income">

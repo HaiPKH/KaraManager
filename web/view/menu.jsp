@@ -17,7 +17,7 @@
         <h1 style="text-align: center; color: coral">MAIN MENU</h1>
         <a href="rooms"><button style="position: fixed;left: 41.8%;top:10%;height: 50px; width: 250px; font-size: 30px">Manage rooms</button></a>
         <a href="invoice"><button style="position: fixed;left: 41.8%;top:20%;height: 50px; width: 250px; font-size: 30px">View invoices</button></a>
-        <a href="income"><button style="position: fixed;left: 41.8%;top:30%;height: 50px; width: 250px; font-size: 30px">View income</button></a>>
+        <a href="incometime"><button style="position: fixed;left: 41.8%;top:30%;height: 50px; width: 250px; font-size: 30px">View income</button></a>>
     </body>
     <footer style="position: fixed;
             height: 50px;

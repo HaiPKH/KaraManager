@@ -23,7 +23,6 @@
             Integer pageindex = (Integer) request.getAttribute("pageindex");
             Integer totalpage = (Integer) request.getAttribute("totalpage");
         %>
-        <script src="js/paging.js" type="text/javascript"></script>
         <link href="css/paging.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
@@ -44,10 +43,11 @@
             </tr>
             <%}%>
         </table>
-            <div id="container" class="paging"> </div>
-            <script>
-                paging("container",<%=pageindex%>,<%=totalpage%>, 1);
-            </script>
+        <a href="income?startdate=<%=d1%>&enddate=<%=d2%>&page=<%=1%>"class="paging"><button>First</button></a>
+        <%for (int i = 2; i < totalpage; i++) {%>
+        <a href="income?startdate=<%=d1%>&enddate=<%=d2%>&page=<%=i%>" class="paging"><button><%=i%></button></a>
+                <%}%>
+        <a href="income?startdate=<%=d1%>&enddate=<%=d2%>&page=<%=totalpage%>"class="paging"><button>Last</button></a>
         <h4>Total income from <%=sdf.format(d1)%> to <%=sdf.format(d2)%></h4>
         <table border ="1px">
             <tr>
@@ -55,8 +55,9 @@
                 <td><%=total%></td>
             </tr>
         </table>
-            <form action="menu" method="GET">
-                <input type="submit" value="Return"/>
-            </form>
+        <form action="menu" method="GET">
+            <input type="submit" value="Return"/>
+        </form>
+
     </body>
 </html>

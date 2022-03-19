@@ -11,7 +11,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            body{
+                background-color: gainsboro;
+            }
 
+        </style>
     </head>
     <body>
         <h1 style="text-align: center; color: coral">MAIN MENU</h1>
@@ -29,7 +34,7 @@
             text-align: center;
             color: aquamarine">
         <div style="margin-top: 10px">
-        <h7>Created by HaiPKH</h7>
+            <h7>Created by HaiPKH</h7>
         </div>
     </footer>
 </html>

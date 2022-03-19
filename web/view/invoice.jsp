@@ -30,6 +30,7 @@
         </script>
         <script src="js/paging.js" type="text/javascript"></script>
         <link href="css/paging.css" rel="stylesheet" type="text/css"/>
+        <link href="css/invoices.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class = "invoices">        
@@ -50,6 +51,7 @@
                         for (int i = 0; i < invoices.size(); i++) {
                 %>
                 <input type="hidden">
+               
                 <tr>
                     <td><%=roomnames.get(i)%></td>
                     <td><%=invoices.get(i).getDatecreated().getDate()%>/<%=invoices.get(i).getDatecreated().getMonth() + 1%>/<%=invoices.get(i).getDatecreated().getYear() + 1900%></td>

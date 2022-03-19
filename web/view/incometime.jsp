@@ -14,7 +14,7 @@
                 String error = String.valueOf(request.getAttribute("error"));
         %>
     </head>
-    <body>
+    <body style="background-color: gainsboro;">
         <%if(error != "null"){%>
         <h4 style="color: red"><%=error%></h4>
         <%}%>

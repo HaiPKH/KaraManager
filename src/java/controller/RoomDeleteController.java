@@ -5,24 +5,20 @@
  */
 package controller;
 
+import dal.InvoiceDBContext;
 import dal.RoomDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Room;
 
 /**
  *
  * @author haiph
  */
-public class RoomController extends BaseAuthController {
+public class RoomDeleteController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +29,15 @@ public class RoomController extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        int rid = Integer.parseInt(request.getParameter("rid"));
+        RoomDBContext rdb = new RoomDBContext();
+        rdb.deleteRoom(rid);
+        response.sendRedirect("rooms");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -43,13 +48,9 @@ public class RoomController extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDBContext db = new RoomDBContext();
-        ArrayList<Room> rooms = db.getRooms();
-        Collections.sort(rooms, (Room o1, Room o2) -> o1.getName().compareTo(o2.getName()));
-        request.setAttribute("rooms", rooms);
-        request.getRequestDispatcher("view/rooms.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -61,13 +62,9 @@ public class RoomController extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int rid = Integer.parseInt(request.getParameter("roomid"));
-        RoomDBContext db = new RoomDBContext();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        db.updateRoomStat(rid, true, timestamp);
-        response.sendRedirect("rooms");
+        processRequest(request, response);
     }
 
     /**

@@ -44,6 +44,10 @@
         <servlet-name>IncomeTimeController</servlet-name>
         <servlet-class>controller.IncomeTimeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RoomDeleteController</servlet-name>
+        <servlet-class>controller.RoomDeleteController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>IncomeTimeController</servlet-name>
         <url-pattern>/incometime</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomDeleteController</servlet-name>
+        <url-pattern>/roomdelete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

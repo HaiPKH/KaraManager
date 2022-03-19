@@ -17,7 +17,7 @@
             Room r = (Room) request.getAttribute("room");
         %>
     </head>
-    <body>
+    <body style="background-color: gainsboro;">
         <form action="update" method="POST">
             <input type="hidden" name="bid" value="<%=inv.getBid()%>"/>
             <input type="hidden" name="priceperhour" value="<%=r.getPriceperhour()%>"/>

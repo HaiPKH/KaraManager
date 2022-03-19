@@ -66,3 +66,7 @@ body{
 .rooms .room1 .update{
     text-align: center;
 }
+.delete{   
+    color: red;
+    text-align: center;
+}

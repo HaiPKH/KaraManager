@@ -45,7 +45,11 @@ public class InvoiceController extends BaseAuthController {
         ArrayList<Invoice> invoices = idb.getInvoices(pageIndex);
         ArrayList<String> roomname = new ArrayList<>();
         for(Invoice i: invoices){
+            try{
             roomname.add(rdb.getRoom(i.getRid()).getName());
+            }catch(NullPointerException e){
+                roomname.add("N/A");
+            }
         }
         int count = idb.count("");
         int totalpage = (count%10==0)?(count/10):(count/10)+1;

@@ -38,7 +38,7 @@
                                 secondsElapsed % 60);
         %>
     </head>
-    <body>
+    <body style="background-color: gainsboro;">
         <div class="invoice">
             <h2>Invoice:</h2>
             <form action="addinvoice" method="POST">              

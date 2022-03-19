@@ -14,7 +14,7 @@
             int errorCode = (Integer) request.getAttribute("errorCode");
         %>
     </head>
-    <body>
+    <body style="background-color: gainsboro;">
         <%if(errorCode == -1){%>
         <h5 style="color: red">Invalid price per hour value, please re-enter</h5>
         <%}else if(errorCode == 1){%>

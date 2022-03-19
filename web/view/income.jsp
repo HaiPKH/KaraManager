@@ -24,6 +24,7 @@
             Integer totalpage = (Integer) request.getAttribute("totalpage");
         %>
         <link href="css/paging.css" rel="stylesheet" type="text/css"/>
+        <link href="css/invoices.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <h4>All invoices from <%=sdf.format(d1)%> to <%=sdf.format(d2)%></h4>
@@ -36,7 +37,7 @@
             </tr>
             <%for (Invoice inv : invoices) {%>
             <tr>
-                <td><%=inv.getDatecreated()%> </td>
+                <td><%=inv.getDatecreated().getDate()%>/<%=inv.getDatecreated().getMonth()%>/<%=inv.getDatecreated().getYear()+1900%> </td>
                 <td><%=inv.getTimeelapsed()%></td>
                 <td><%=inv.getOthercost()%></td>
                 <td><%=inv.getTotalcost()%></td>                
